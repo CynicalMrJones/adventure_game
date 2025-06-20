@@ -2,6 +2,13 @@
 use std::io;
 mod actions;
 
+
+/*
+ * TODO: Figure out how to only take items if you are looking at the object they 
+ * are in
+ * TODO: If an action has no secondary command it crashes. need to fix 
+ */
+
 struct Player {
     name: String,
     looking_at: Object,
@@ -12,14 +19,14 @@ struct Player {
 struct Room {
     objects: Vec<Object>,
     name: String,
-    description: String
+    look: String, //What you can see
+    description: String //A deeper look
 }
 
 #[derive(Clone, Debug)]
 struct Object {
     name: String,
-    //if key item
-    key: bool, 
+    key: bool, //key item
     holdable: bool,
     description: String
 }
@@ -28,9 +35,23 @@ impl Object {
     fn look(&self) -> String{
         return format!("You are looking at {}", self.name).to_string();
     }
-
     fn describe(&self) -> String{
         return format!("{}", self.description).to_string();
+    }
+    fn new(name: String, key: bool, holdable: bool, description: String) -> Self{
+        Self{name, key, holdable, description}
+    }
+}
+
+impl Room{
+    fn look(&self) -> String{
+        return self.look.to_string()
+    }
+    fn describe(&self) -> String{
+        return self.description.to_string()
+    }
+    fn new(objects: Vec<Object>, name: String, look: String, description: String) -> Self{
+        Self{objects, name, look, description}
     }
 }
 
@@ -55,13 +76,9 @@ fn runner(commands: Vec<&str>, room: &Room, player: &mut Player){
 
 
 fn main() {
-    let nothing = Object {
-        name: String::from("nothing"),
-        key: true,
-        holdable: true,
-        description: "Nothing to see here".to_string()
-    };
+    let nothing = Object::new("nothing".to_string(), true, true, "Nothing to see here".to_string());
     
+    //The player
     let player_inventory = Vec::new();
     let mut player = Player {
         name: "Jimmy".to_string(),
@@ -70,46 +87,29 @@ fn main() {
         inventory: player_inventory
     };
     
-    let vase = Object {
-        name: String::from("vase"),
-        key: false,
-        holdable: true,
-        description: "This vase looks really old".to_string()
-    };
-
-    let chest = Object {
-        name: String::from("chest"),
-        key: false,
-        holdable: true,
-        description: "This chest is definitly not a mimic".to_string()
-    };
-
-    let door = Object {
-        name: String::from("door"),
-        key: false,
-        holdable: false,
-        description: "This is a door. Its locked".to_string()
-    };
-
-    let key = Object {
-        name: String::from("key"),
-        key: true,
-        holdable: true,
-        description: "This key looks like it would open the chest".to_string()
-    };
+    //object list
+    let vase = Object::new("vase".to_string(), false, true, "This vase is very old. Wait... Apon further inspection I can see a key inside".to_string());
+    let chest = Object::new("chest".to_string(), false, false, "This chest is not locked and looking inside I can see a ring".to_string());
+    let door = Object::new("door".to_string(), false, false, "This is a door. Its locked".to_string());
+    let key = Object::new("key".to_string(), true, true, "This key look like it would open a door".to_string());
+    let ring = Object::new("ring".to_string(), true, true, "This ring looks important. Past the ornate gem is a picture of a little girl.".to_string());
 
     //Array of objects
-    let room1_array = vec![chest, vase, door, key];
+    let room1_array = vec![chest, vase, door, key, ring];
 
-    let room1 = Room {
-        objects: room1_array,
-        name: String::from("dungeon"),
-        description: "This is a very dark room with not alot in it, you see a vase and a chest and the door".to_string()
-    };
+    let room1 = Room::new(room1_array, "closet".to_string(), "This room has stone walls, a chest, a vase and a door.".to_string(), "Judging from the cold stone walls and lack of any decoration I would say that this is a closet, I wonder why somebody would throw me in a closet?".to_string());
+
+    //Getting player name
+    let mut name = String::new();
+    println!("Hello what is your name?: ");
+    io::stdin()
+        .read_line(&mut name)
+        .expect("Failed to read line");
+    player.name = name.trim_end().to_string();
+    println!("Thank you {} enjoy the game", player.name);
 
     // main game loop
-    println!("Welcome {} to the game", player.name);
-    println!("{}", room1.description);
+    println!("Wow my head hurts. How did I end up here. I should find a way out. I should look around I think I'm in a {}", room1.name);
     loop {
         let mut input = String::new();
         io::stdin()
