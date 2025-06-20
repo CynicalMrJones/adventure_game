@@ -3,7 +3,10 @@ use crate::Room;
 use crate::Player;
 
 pub fn look(thing: &str, room: &Room, player: &mut Player) -> String{
-    if let Some(object) = room.objects.iter().find(|obj| obj.name == thing.to_string()) {
+    if thing == "room" {
+        return room.look()
+    }
+    else if let Some(object) = room.objects.iter().find(|obj| obj.name == thing.to_string()) {
         player.looking_at = object.clone();
         return format!("{}", object.look());
     }
@@ -13,6 +16,9 @@ pub fn look(thing: &str, room: &Room, player: &mut Player) -> String{
 }
 
 pub fn describe(thing: &str, room: &Room) -> String{
+    if thing == "room" {
+        return room.describe()
+    }
     if let Some(object) = room.objects.iter().find(|obj| obj.name == thing.to_string()) {
         return format!("{}", object.describe());
     }
@@ -23,7 +29,7 @@ pub fn describe(thing: &str, room: &Room) -> String{
 
 pub fn take(thing: &str, room: &Room, player: &mut Player) -> String{
     if let Some(object) = room.objects.iter().find(|obj| obj.name == thing.to_string()) {
-        if player.looking_at.name == "vase".to_string(){
+        if player.looking_at.name == thing && object.key == true {
             player.inventory.push(object.clone());
             return format!("You took the {}", object.name); 
         }
