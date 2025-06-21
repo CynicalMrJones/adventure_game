@@ -2,6 +2,10 @@
 use crate::Room;
 use crate::Player;
 
+ /* 
+  * TODO: The ring is not takeable. Rewrite logic for the take action
+  *
+  */
 pub fn look(thing: &str, room: &Room, player: &mut Player) -> String{
     if thing == "room" {
         return room.look()
