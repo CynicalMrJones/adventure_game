@@ -32,13 +32,13 @@ pub fn describe(thing: &str, room: &Room) -> String{
 }
 
 pub fn take(thing: &str, room: &Room, player: &mut Player) -> String{
-    if let Some(object) = room.objects.iter().find(|obj| obj.name == thing.to_string()) {
+    if let Some(object) = room.objects.iter().find(|obj| obj.name.to_string() == thing.to_string()) {
         if player.looking_at.name == thing && object.key == true {
             player.inventory.push(object.clone());
             return format!("You took the {}", object.name); 
         }
         else {
-            return format!("There is no {}", thing);
+            return format!("You cannot take {}", thing);
         }
     }
     else {
