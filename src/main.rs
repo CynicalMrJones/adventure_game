@@ -6,7 +6,6 @@ mod actions;
 /*
  * TODO: Figure out how to only take items if you are looking at the object they 
  * are in
- * TODO: If an action has no secondary command it crashes. need to fix 
  */
 
 struct Player {
@@ -57,20 +56,31 @@ impl Room{
 
 
 fn runner(commands: Vec<&str>, room: &Room, player: &mut Player){
-    if commands[0] == "look" {
-        println!("{}", actions::look(commands[1], room, player));
+    // for single word commands
+    if commands.len() < 2{
+        if commands[0] == "inventory" {
+            actions::inventory(player);
+        }
+        else {
+            println!("I can't do that");
+        }
     }
-    else if commands[0] == "describe" {
-        println!("{}", actions::describe(commands[1], room));
-    }
-    else if commands[0] == "take" {
-        println!("{}", actions::take(commands[1], room, player));
-    }
-    else if commands[0] == "inventory" {
-        actions::inventory(player);
-    }
-    else if commands[0] == "use" {
-        println!("{}", actions::interact(commands[1], player));
+    else {
+        if commands[0] == "inventory" {
+            actions::inventory(player);
+        }
+        else if commands[0] == "look" {
+            println!("{}", actions::look(commands[1], room, player));
+        }
+        else if commands[0] == "describe" {
+            println!("{}", actions::describe(commands[1], room));
+        }
+        else if commands[0] == "take" {
+            println!("{}", actions::take(commands[1], room, player));
+        }
+        else if commands[0] == "use" {
+            println!("{}", actions::interact(commands[1], player));
+        }
     }
 }
 
@@ -115,7 +125,7 @@ fn main() {
         io::stdin()
             .read_line(&mut input)
             .expect("Failed to read line");
-        let test: Vec<_> = input.split_whitespace().collect();
-        runner(test, &room1, &mut player);
+        let text: Vec<_> = input.split_whitespace().collect();
+        runner(text, &room1, &mut player);
     }
 }
