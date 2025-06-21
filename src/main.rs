@@ -6,6 +6,7 @@ mod actions;
 /*
  * TODO: Figure out how to only take items if you are looking at the object they 
  * are in
+ * TODO: Properly catch invalid commands 
  */
 
 struct Player {
