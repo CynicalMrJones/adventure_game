@@ -3,7 +3,9 @@ use crate::Room;
 use crate::Player;
 
  /* 
-  * TODO: The ring is not takeable. Rewrite logic for the take action
+  * TODO: Interact is poorly written. Needs rewrite
+  * Maybe create a door struct that takes a specific key
+  * Maybe change to/add open action
   *
   */
 pub fn look(thing: &str, room: &Room, player: &mut Player) -> String{
