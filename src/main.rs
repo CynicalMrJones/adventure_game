@@ -83,6 +83,9 @@ fn runner(commands: Vec<&str>, room: &Room, player: &mut Player){
         else if commands[0] == "use" {
             text_roll(actions::interact(commands[1], player));
         }
+        else {
+            text_roll("I can't do that".to_string());
+        }
     }
 }
 
