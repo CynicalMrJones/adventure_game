@@ -64,7 +64,7 @@ fn runner(commands: Vec<&str>, room: &Room, player: &mut Player){
             actions::inventory(player);
         }
         else {
-            println!("I can't do that");
+            text_roll("I can't do that\n".to_string());
         }
     }
     else {
@@ -72,23 +72,23 @@ fn runner(commands: Vec<&str>, room: &Room, player: &mut Player){
             actions::inventory(player);
         }
         else if commands[0] == "look" {
-            println!("{}", actions::look(commands[1], room, player));
+            text_roll(actions::look(commands[1], room, player));
         }
         else if commands[0] == "describe" {
-            println!("{}", actions::describe(commands[1], room));
+            text_roll(actions::describe(commands[1], room));
         }
         else if commands[0] == "take" {
-            println!("{}", actions::take(commands[1], room, player));
+            text_roll(actions::take(commands[1], room, player));
         }
         else if commands[0] == "use" {
-            println!("{}", actions::interact(commands[1], player));
+            text_roll(actions::interact(commands[1], player));
         }
     }
 }
 
-fn text_roll(text: String){
-    let test = time::Duration::from_millis(20);
-    let pause = time::Duration::from_millis(20);
+fn text_roll(mut text: String){
+    let test = time::Duration::from_millis(30);
+    text.push('\n');
     for c in text.chars(){
         print!("{c}");
         std::io::stdout().flush().expect("Flushing to succeed");
@@ -122,7 +122,7 @@ fn main() {
 
     //Getting player name
     let mut name = String::new();
-    println!("Hello what is your name?: ");
+    text_roll("Hello what is your name?: ".to_string());
     io::stdin()
         .read_line(&mut name)
         .expect("Failed to read line");
@@ -130,7 +130,7 @@ fn main() {
     text_roll(format!("Thank you {} enjoy the game\n", player.name));
 
     // main game loop
-    println!("Wow my head hurts. How did I end up here. I should find a way out. I should look around I think I'm in a {}", room1.name);
+    text_roll(format!("Wow my head hurts. How did I end up here. I should find a way out. I should look around I think I'm in a {}", room1.name));
     loop {
         let mut input = String::new();
         io::stdin()
