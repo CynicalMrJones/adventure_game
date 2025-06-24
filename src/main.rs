@@ -1,13 +1,13 @@
 
 use std::io;
+use std::io::Write;
+use std::{thread, time};
 mod actions;
 
 
 /*
  * TODO: Figure out how to only take items if you are looking at the object they 
  * are in
- * TODO: Properly catch invalid commands 
- * TODO: Text rollout effect
  */
 
 struct Player {
@@ -86,6 +86,15 @@ fn runner(commands: Vec<&str>, room: &Room, player: &mut Player){
     }
 }
 
+fn text_roll(text: String){
+    let test = time::Duration::from_millis(20);
+    let pause = time::Duration::from_millis(20);
+    for c in text.chars(){
+        print!("{c}");
+        std::io::stdout().flush().expect("Flushing to succeed");
+        thread::sleep(test);
+    }
+}
 
 fn main() {
     let nothing = Object::new("nothing".to_string(), true, true, "Nothing to see here".to_string());
@@ -118,7 +127,7 @@ fn main() {
         .read_line(&mut name)
         .expect("Failed to read line");
     player.name = name.trim_end().to_string();
-    println!("Thank you {} enjoy the game", player.name);
+    text_roll(format!("Thank you {} enjoy the game\n", player.name));
 
     // main game loop
     println!("Wow my head hurts. How did I end up here. I should find a way out. I should look around I think I'm in a {}", room1.name);
