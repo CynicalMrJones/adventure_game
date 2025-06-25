@@ -12,7 +12,7 @@ pub fn look(thing: &str, room: &Room, player: &mut Player) -> String{
     if thing == "room" {
         return room.look()
     }
-    else if let Some(object) = room.objects.iter().find(|obj| obj.name == thing.to_string()) {
+    else if let Some(object) = room.objects.iter().find(|obj| obj.name == thing) {
         player.looking_at = object.clone();
         return format!("{}", object.look());
     }
@@ -54,6 +54,7 @@ pub fn inventory(player: &mut Player){
         println!("{}", i.name);
     }
 }
+
 
 pub fn interact(thing: &str, player: &mut Player) -> String{
     if let Some(object) = player.inventory.iter().find(|obj| obj.name == "key") {
