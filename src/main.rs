@@ -28,7 +28,7 @@ struct Room {
 struct Object {
     name: String,
     key: bool, //key item
-    holdable: bool,
+    inside: bool,
     description: String
 }
 
@@ -39,8 +39,8 @@ impl Object {
     fn describe(&self) -> String{
         return format!("{}", self.description).to_string();
     }
-    fn new(name: String, key: bool, holdable: bool, description: String) -> Self{
-        Self{name, key, holdable, description}
+    fn new(name: String, key: bool, inside: bool, description: String) -> Self{
+        Self{name, key, inside, description}
     }
 }
 
@@ -58,8 +58,11 @@ impl Room{
 
 
 fn runner(commands: Vec<&str>, room: &Room, player: &mut Player){
+    if commands.len() == 0{
+        return
+    }
     // for single word commands
-    if commands.len() < 2{
+    else if commands.len() < 2{
         if commands[0] == "inventory" {
             actions::inventory(player);
         }
@@ -94,7 +97,7 @@ fn text_roll(mut text: String){
     text.push('\n');
     for c in text.chars(){
         print!("{c}");
-        std::io::stdout().flush().expect("Flushing to succeed");
+        std::io::stdout().flush().expect("Flush that boi");
         thread::sleep(test);
     }
 }
