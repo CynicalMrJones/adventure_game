@@ -8,6 +8,7 @@ mod actions;
 /*
  * TODO: Figure out how to only take items if you are looking at the object they 
  * are in
+ * TODO: Clear screen and display picture
  */
 
 struct Player {
