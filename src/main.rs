@@ -1,6 +1,8 @@
 
 use std::io;
 use std::process::exit;
+use std::env;
+use std::fs;
 use std::io::Write;
 use std::{thread, time};
 mod actions;
@@ -9,7 +11,6 @@ mod actions;
 /*
  * TODO: Figure out how to only take items if you are looking at the object they 
  * are in
- * TODO: Clear screen and display picture
  */
 
 struct Player {
@@ -104,9 +105,19 @@ fn text_roll(mut text: String){
     }
 }
 
+fn clear(){
+    print!("\x1B[2J\x1B[1;1H");
+}
+
+fn paint(){
+    //first picture
+    let content = fs::read_to_string("pictures/castle.pic")
+        .expect("Picture failed to load");
+    println!("{}", content);
+}
 fn main() {
     let nothing = Object::new("nothing".to_string(), true, true, "Nothing to see here".to_string());
-    
+
     //The player
     let player_inventory = Vec::new();
     let mut player = Player {
@@ -115,7 +126,7 @@ fn main() {
         hp: 100,
         inventory: player_inventory
     };
-    
+
     //object list
     let vase = Object::new("vase".to_string(), false, true, "This vase is very old. Wait... Apon further inspection I can see a key inside".to_string());
     let chest = Object::new("chest".to_string(), false, false, "This chest is not locked and looking inside I can see a ring".to_string());
@@ -129,6 +140,8 @@ fn main() {
     let room1 = Room::new(room1_array, "closet".to_string(), "This room has stone walls, a chest, a vase and a door.".to_string(), "Judging from the cold stone walls and lack of any decoration I would say that this is a closet, I wonder why somebody would throw me in a closet?".to_string());
 
     //Getting player name
+    clear();
+    paint();
     let mut name = String::new();
     text_roll("Hello what is your name?: ".to_string());
     io::stdin()
@@ -137,7 +150,7 @@ fn main() {
     player.name = name.trim_end().to_string();
     text_roll(format!("Thank you {} enjoy the game\n", player.name));
 
-    // main game loop
+    // main game "loop"
     text_roll(format!("Wow my head hurts. How did I end up here. I should find a way out. I should look around I think I'm in a {}", room1.name));
     loop {
         let mut input = String::new();
