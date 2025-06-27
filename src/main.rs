@@ -1,5 +1,6 @@
 
 use std::io;
+use std::process::exit;
 use std::io::Write;
 use std::{thread, time};
 mod actions;
@@ -66,6 +67,9 @@ fn runner(commands: Vec<&str>, room: &Room, player: &mut Player){
     else if commands.len() < 2{
         if commands[0] == "inventory" {
             actions::inventory(player);
+        }
+        else if commands[0] == "quit" {
+            exit(0);
         }
         else {
             text_roll("I can't do that\n".to_string());
