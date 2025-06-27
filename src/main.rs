@@ -76,10 +76,7 @@ fn runner(commands: Vec<&str>, room: &Room, player: &mut Player){
         }
     }
     else {
-        if commands[0] == "inventory" {
-            actions::inventory(player);
-        }
-        else if commands[0] == "look" {
+        if commands[0] == "look" {
             text_roll(actions::look(commands[1], room, player));
         }
         else if commands[0] == "describe" {
