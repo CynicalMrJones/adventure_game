@@ -5,7 +5,8 @@ use std::env;
 use std::fs;
 use std::fs::File;
 use std::io::BufReader;
-use rodio::{Decoder, OutputStream, source::Source};
+use rodio::{Decoder, OutputStream, Sink};
+use rodio::source::{SineWave, Source};
 use std::io::Write;
 use std::{thread, time};
 mod actions;
@@ -131,14 +132,13 @@ fn main() {
     };
 
     //audio test
-    //wow that was kinda easy
-    //surly this won't get more complicated
     thread::spawn(|| {
         let (_stream, stream_handle) = OutputStream::try_default().unwrap();
         let file = BufReader::new(File::open("song.mp3").unwrap());
+        let sink = Sink::try_new(&stream_handle).unwrap();
         let source = Decoder::new(file).unwrap();
-        let test = source.take_duration(std::time::Duration::from_secs(40)).repeat_infinite();
-        stream_handle.play_raw(test.convert_samples()).unwrap();
+        sink.set_volume(0.4);
+        sink.append(source);
         std::thread::sleep(std::time::Duration::from_secs(10000));
     });
 
