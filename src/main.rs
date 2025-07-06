@@ -113,9 +113,8 @@ fn clear(){
     print!("\x1B[2J\x1B[1;1H");
 }
 
-fn paint(){
-    //first picture
-    let content = fs::read_to_string("pictures/castle.pic")
+fn paint(pic: &str){
+    let content = fs::read_to_string(format!("pictures/{}", pic))
         .expect("Picture failed to load");
     println!("{}", content);
 }
@@ -156,7 +155,7 @@ fn main() {
 
     //Getting player name
     clear();
-    paint();
+    paint("castle.pic");
     let mut name = String::new();
     text_roll("Hello what is your name?: ".to_string());
     io::stdin()
