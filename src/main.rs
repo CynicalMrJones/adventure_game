@@ -118,6 +118,20 @@ fn paint(pic: &str){
         .expect("Picture failed to load");
     println!("{}", content);
 }
+
+fn audio_player(song: &str){
+    let audio = song.to_string();
+    thread::spawn(|| {
+        let (_stream, stream_handle) = OutputStream::try_default().unwrap();
+        let file = BufReader::new(File::open(audio).unwrap());
+        let sink = Sink::try_new(&stream_handle).unwrap();
+        let source = Decoder::new(file).unwrap();
+        sink.set_volume(0.4);
+        sink.append(source);
+        std::thread::sleep(std::time::Duration::from_secs(10000));
+    });
+}
+
 fn main() {
     let nothing = Object::new("nothing".to_string(), true, true, "Nothing to see here".to_string());
 
@@ -130,16 +144,6 @@ fn main() {
         inventory: player_inventory
     };
 
-    //audio test
-    thread::spawn(|| {
-        let (_stream, stream_handle) = OutputStream::try_default().unwrap();
-        let file = BufReader::new(File::open("song.mp3").unwrap());
-        let sink = Sink::try_new(&stream_handle).unwrap();
-        let source = Decoder::new(file).unwrap();
-        sink.set_volume(0.4);
-        sink.append(source);
-        std::thread::sleep(std::time::Duration::from_secs(10000));
-    });
 
     //object list
     let vase = Object::new("vase".to_string(), false, true, "This vase is very old. Wait... Apon further inspection I can see a key inside".to_string());
@@ -156,6 +160,7 @@ fn main() {
     //Getting player name
     clear();
     paint("castle.pic");
+    audio_player("song.mp3");
     let mut name = String::new();
     text_roll("Hello what is your name?: ".to_string());
     io::stdin()
