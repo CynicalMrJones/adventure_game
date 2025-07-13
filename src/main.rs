@@ -15,6 +15,7 @@ mod actions;
 /*
  * TODO: Figure out how to only take items if you are looking at the object they 
  * are in
+ * TODO: How to change rooms 
  */
 
 struct Player {
@@ -172,6 +173,8 @@ fn main() {
     // main game "loop"
     text_roll(format!("Wow my head hurts. How did I end up here. I should find a way out. I should look around I think I'm in a {}", room1.name));
     loop {
+        print!("Command: ");
+        io::stdout().flush().unwrap();
         let mut input = String::new();
         io::stdin()
             .read_line(&mut input)
