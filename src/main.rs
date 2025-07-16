@@ -15,7 +15,10 @@ mod actions;
 /*
  * TODO: Figure out how to only take items if you are looking at the object they 
  * are in
- * TODO: How to change rooms 
+ * TODO: How to change rooms
+ * TODO: When a player takes a key. Remove key from room
+ * TODO: Inventory showed message twice
+ * TODO: If you are looking at something you should be able to describe it by just typing describe
  */
 
 struct Player {
