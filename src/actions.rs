@@ -49,8 +49,8 @@ pub fn take(thing: &str, room: &Room, player: &mut Player) -> String{
 }
 
 pub fn inventory(player: &mut Player){
+    println!("This is in my inventory: ");
     for i in &player.inventory{
-        println!("This is in my inventory: ");
         println!("{}", i.name);
     }
 }
