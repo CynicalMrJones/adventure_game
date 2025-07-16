@@ -17,7 +17,6 @@ mod actions;
  * are in
  * TODO: How to change rooms
  * TODO: When a player takes a key. Remove key from room
- * TODO: Inventory showed message twice
  * TODO: If you are looking at something you should be able to describe it by just typing describe
  */
 
@@ -40,6 +39,7 @@ struct Object {
     name: String,
     key: bool, //key item
     inside: bool,
+    id: i32,
     description: String
 }
 
@@ -50,8 +50,8 @@ impl Object {
     fn describe(&self) -> String{
         return format!("{}", self.description).to_string();
     }
-    fn new(name: String, key: bool, inside: bool, description: String) -> Self{
-        Self{name, key, inside, description}
+    fn new(name: String, key: bool, inside: bool,id: i32, description: String) -> Self{
+        Self{name, key, inside, id, description}
     }
 }
 
@@ -137,7 +137,7 @@ fn audio_player(song: &str){
 }
 
 fn main() {
-    let nothing = Object::new("nothing".to_string(), true, true, "Nothing to see here".to_string());
+    let nothing = Object::new("nothing".to_string(), true, true, 0, "Nothing to see here".to_string());
 
     //The player
     let player_inventory = Vec::new();
@@ -150,11 +150,11 @@ fn main() {
 
 
     //object list
-    let vase = Object::new("vase".to_string(), false, true, "This vase is very old. Wait... Apon further inspection I can see a key inside".to_string());
-    let chest = Object::new("chest".to_string(), false, false, "This chest is not locked and looking inside I can see a ring".to_string());
-    let door = Object::new("door".to_string(), false, false, "This is a door. Its locked".to_string());
-    let key = Object::new("key".to_string(), true, true, "This key look like it would open a door".to_string());
-    let ring = Object::new("ring".to_string(), true, true, "This ring looks important. Past the ornate gem is a picture of a little girl.".to_string());
+    let vase = Object::new("vase".to_string(), false, true, 0, "This vase is very old. Wait... Apon further inspection I can see a key inside".to_string());
+    let chest = Object::new("chest".to_string(), false, false,0, "This chest is not locked and looking inside I can see a ring".to_string());
+    let door = Object::new("door".to_string(), false, false, 1, "This is a door. Its locked".to_string());
+    let key = Object::new("key".to_string(), true, true, 1, "This key look like it would open a door".to_string());
+    let ring = Object::new("ring".to_string(), true, true, 0, "This ring looks important. Past the ornate gem is a picture of a little girl.".to_string());
 
     //Array of objects
     let room1_array = vec![chest, vase, door, key, ring];
