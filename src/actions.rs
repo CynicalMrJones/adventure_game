@@ -57,11 +57,10 @@ pub fn inventory(player: &mut Player){
 
 
 pub fn interact(thing: &str, player: &mut Player) -> String{
-    if let Some(object) = player.inventory.iter().find(|obj| obj.name == "key") {
+    if let Some(object) = player.inventory.iter().find(|obj| obj.name == thing) {
         if player.looking_at.name == "door"{
-            let name = object.name.clone();
             player.inventory.pop();
-            return format!("You used the {} and opened the door", name);
+            return format!("You used the {} and opened the door", thing);
         }
         else{
             return format!("There is no {} in inventory", thing);
