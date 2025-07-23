@@ -77,6 +77,9 @@ fn runner(commands: Vec<&str>, room: &Room, player: &mut Player){
         if commands[0] == "inventory" {
             actions::inventory(player);
         }
+        else if commands[0] == "help" {
+            println!("look: a basic look at the room\ndescribe: a closer look at an item\ninventory: Look at inventory\ntake: take an item\nuse: use an item\nquit: Exit the game");
+        }
         else if commands[0] == "quit" {
             exit(0);
         }
